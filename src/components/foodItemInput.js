@@ -6,6 +6,7 @@ import SvgIcon from 'material-ui/SvgIcon';
 import ICONS from '../styles/icons';
 import FoodItemTable from './foodItemTable';
 
+const confirmedItems = {};
 
 class FoodItemInput extends Component {
 
@@ -14,11 +15,16 @@ class FoodItemInput extends Component {
 		this.state = {
 			open: false,
 			autoScrollBodyContent: true,
-			newItems: [],
+			newItems: ['Eggs', 'Arugula'],
 		};
 
 		this.handleOpen = this.handleOpen.bind(this);
 		this.handleClose = this.handleClose.bind(this);
+	}
+
+	discardItems(item) {
+		confirmedItems[item] = !confirmedItems[item];
+		console.log('Discarded Items', confirmedItems);
 	}
 
 	speechRecognitionInit() {
@@ -39,7 +45,7 @@ class FoodItemInput extends Component {
 		recognition.interimResults = true;
 
 		let speechFlag = false;
-		const speechResults = [];
+		// const speechResults = [];
 
 
 		recognition.onresult = (event) => {
@@ -48,8 +54,9 @@ class FoodItemInput extends Component {
 				if (event.results[i].isFinal) {
 					console.log('Final sentence is : ', identificated);
 					const tempRes = identificated.split('next');
-					speechResults.push(tempRes);
-					this.setState({ newItems: speechResults });
+					// speechResults.push(tempRes);
+					tempRes.forEach((item) => { confirmedItems[item] = true; });
+					this.setState({ newItems: tempRes });
 					console.log('this is state.newItems: ', this.state.newItems);
 				} else {
 					console.log('I understood : ', identificated);
@@ -77,7 +84,6 @@ class FoodItemInput extends Component {
 		} else {
 			console.log('speechFlag is true');
 			console.log('stop recognition');
-			console.log('speech results array is : ', speechResults);
 			recognition.stop();
 			speechFlag = false;
 		}
@@ -87,11 +93,12 @@ class FoodItemInput extends Component {
 		// map that array to the component state
 
 	handleOpen() {
-		// this.speechRecognitionInit();
+		this.speechRecognitionInit();
 		this.setState({ open: true });
 	}
 
 	handleClose() {
+		this.props.submit(confirmedItems);
 		this.setState({ open: false });
 	}
 
@@ -135,12 +142,16 @@ class FoodItemInput extends Component {
 					<div> Read the names of your foods out loud, as you load them into the refrigerator.</div>
 					<div> After each food say "next" and when you are done say "end" like this:</div>
 					<div>"Tomatoes..next..Milk..next..Chicken...end"</div>
-					<FoodItemTable items={this.state.newItems} />
+					<FoodItemTable items={this.state.newItems} discarded={this.discardItems} />
 				</Dialog>
 			</div>
 		);
 	}
 
 }
+
+FoodItemInput.propTypes = {
+	submit: React.PropTypes.func,
+};
 
 export default FoodItemInput;
