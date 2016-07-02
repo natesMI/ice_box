@@ -43,12 +43,6 @@ const muiTheme = {
     accent3Color: '#F5E5C4',
 	},
 };
-// #F5E5C4
-// #EDB97D
-// #D48548
-// #40593A
-// #769481
-// #AEC2B7
 
 
 ReactDOM.render(
