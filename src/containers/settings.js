@@ -26,9 +26,6 @@ const styles = {
 		height: 150,
 		width: 150,
 	},
-	button: {
-		margin: 12,
-	},
 	alert: {
 		width: 300
 	},
@@ -109,7 +106,7 @@ class Settings extends Component {
 	render() {
 
 		return (
-			<div className="container">
+			<div className="container-fluid">
 				<div className="row">
 
 				<div className="settings-box col-md-4">
@@ -118,16 +115,19 @@ class Settings extends Component {
 				</div>
 				<div className="settings-divs">	
 					<List>
-						<ListItem>
+						<ListItem disabled>
 							<img style={styles.photo} className="img-rounded" src={"https://avatars2.githubusercontent.com/u/16884524?v=3&s=460"}/>
 						</ListItem>
-						<ListItem>
+						<ListItem style={{height: 40}} disabled>
 							<h4>Username: {this.props.email}</h4>
 						</ListItem>
-						<ListItem>
+						<ListItem style={{height: 40}} disabled>
 							<h4>Name: {this.props.name} </h4>
 						</ListItem>
-						<ListItem>
+						<ListItem style={{height: 40}} disabled>
+							<PhotoUploader />
+						</ListItem>
+						<ListItem disabled>
 							<div>
 								<Dialog
 									actions={<FlatButton label="OK" primary={true} onTouchTap={this.messageToggle} />}
@@ -143,7 +143,6 @@ class Settings extends Component {
 					</List>
 					</div>
 					<div className="setting-footer">
-						<PhotoUploader />
 					</div>
 					</div>
 
@@ -173,8 +172,7 @@ class Settings extends Component {
 					</List>
 						<SettingsEntry addUser={this.addUser}/>
 					</div>
-						<div className="setting-footer">
-						</div>
+						<div className="setting-footer"></div>
 				</div>
 
 				<div className="settings-box col-md-4">
@@ -197,16 +195,16 @@ class Settings extends Component {
 							</TableBody>
 						</Table>
 					</List>
-				</div>
-				<div className="setting-footer">
 					<FlatButton 
 						label="Update" 
 						primary2 
 						backgroundColor={'#F5E5C4'} 
-						style={styles.button} 
+						style={{width: '95%', height: 35}} 
 						onClick={this.updateStaples} 
-						hoverColor={'white'}
+						hoverColor={'#F5E5C4'}
 					/>
+				</div>
+				<div className="setting-footer">
 				</div>
 				</div>
 
